@@ -116,74 +116,37 @@ Mem:          973Mi        300Mi       600Mi
 #### Method A: Using Official Docker Repository (Recommended)
 
 ```bash
-# Set up Docker's APT repository
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# Remove any previosuly installed docker
+sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc | cut -f1)
 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-# Update package lists
+# Add Docker's official GPG key:
 sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Install Docker
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# Add the repository to Apt sources:
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
 
 # Verify Docker installation
 docker --version
+docker compose version
 
 # Expected output: Docker version 20.10.X or higher
 ```
 
-#### Method B: Using Docker's Installation Script
+### 2.2 Verify Docker Installation
 
 ```bash
-# Download and run Docker installation script
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-# Verify installation
-docker --version
-```
-
-### 2.2 Install Docker Compose (Standalone)
-
-```bash
-# Download Docker Compose binary
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-# Make it executable
-sudo chmod +x /usr/local/bin/docker-compose
-
-# Verify installation
-docker-compose --version
-
-# Expected output: Docker Compose version 2.X.X or higher
-```
-
-### 2.3 Configure Docker to Run Without Sudo (Optional)
-
-```bash
-# Create docker group (usually already exists)
-sudo groupadd docker 2>/dev/null || true
-
-# Add current user to docker group
-sudo usermod -aG docker $USER
-
-# Apply new group membership
-newgrp docker
-
-# Verify
-docker ps
-
-# Note: You may need to log out and back in for this to take effect
-```
-
-### 2.4 Verify Docker Installation
-
-```bash
-# Test Docker installation
-docker run hello-world
-
-# Expected: Should download and print "Hello from Docker!" message
 
 # Check Docker info
 docker info
