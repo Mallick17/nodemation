@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+/env/
+/venv/
+__pypackages__/
+
+# Build artifacts
+/build/
+/dist/
+/target/
+*.class
+
+# Temporary or log files
+*.log
+npm-debug.log*
+*.tmp
+*.swp
+.cache/
+
+# OS and IDE specific files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment File
+.env
