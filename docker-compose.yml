@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    
+    # Port configuration
+    ports:
+      - "5678:5678"
+    
+    # Environment variables
+    environment:
+      # Basic authentication
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=your_secure_password_here
+      
+      # Database configuration (SQLite is default)
+      - DB_TYPE=sqlite
+      
+      # Timezone setting
+      - GENERIC_TIMEZONE=UTC
+      
+      # Webhook configuration (replace with your EC2 public IP)
+      - WEBHOOK_URL=http://YOUR_EC2_PUBLIC_IP:5678
+      
+      # Disable telemetry
+      - N8N_METRICS=false
+    
+    # Volume mounts for data persistence
+    volumes:
+      - ./n8n-data:/home/node/.n8n
+      
+    # Resource limits (for t3.micro optimization)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  default:
+    name: n8n-network
