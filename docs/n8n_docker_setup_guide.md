@@ -384,7 +384,7 @@ NODE_ENV=production
 # ======================
 N8N_BASIC_AUTH_ACTIVE=true
 N8N_BASIC_AUTH_USER=admin
-N8N_BASIC_AUTH_PASSWORD=YOUR_SECURE_PASSWORD_HERE
+N8N_BASIC_AUTH_PASSWORD=password
 
 # ======================
 # DATABASE (SQLite)
@@ -404,7 +404,7 @@ DB_TYPE=sqlite
 # ======================
 # TIMEZONE & LOCALE
 # ======================
-GENERIC_TIMEZONE=UTC
+GENERIC_TIMEZONE=ASIA/KOLKATA
 
 # ======================
 # WEBHOOK CONFIGURATION

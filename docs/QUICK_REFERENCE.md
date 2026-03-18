@@ -27,6 +27,10 @@ newgrp docker
 ```
 
 ### 3️⃣ Start n8n
+
+Go to the Official n8n Hosting Guide for the Local Setup with PostgreSQL (recommended for production):
+https://github.com/n8n-io/n8n-hosting/blob/main/docker-compose/withPostgres/README.md
+
 ```bash
 cd ~/n8n
 docker-compose up -d

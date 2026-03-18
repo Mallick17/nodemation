@@ -21,7 +21,7 @@ services:
       - DB_TYPE=sqlite
       
       # Timezone setting
-      - GENERIC_TIMEZONE=UTC
+      - GENERIC_TIMEZONE=Asia/Kolkata
       
       # Webhook configuration (replace with your EC2 public IP)
       - WEBHOOK_URL=http://YOUR_EC2_PUBLIC_IP:5678
